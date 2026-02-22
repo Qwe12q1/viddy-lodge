@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024; // 2 GB
+
 const VideoUploader = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -108,7 +110,7 @@ const VideoUploader = () => {
             <>
               <Upload className="h-10 w-10 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">
-                Перетащите или выберите MP4 / WebM
+                Перетащите или выберите MP4 / WebM (до 2 ГБ)
               </span>
             </>
           )}
@@ -118,7 +120,14 @@ const VideoUploader = () => {
             accept="video/mp4,video/webm"
             className="hidden"
             disabled={uploading}
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            onChange={(e) => {
+              const selected = e.target.files?.[0] || null;
+              if (selected && selected.size > MAX_FILE_SIZE) {
+                toast.error("Файл слишком большой. Максимум 2 ГБ");
+                return;
+              }
+              setFile(selected);
+            }}
           />
         </label>
       </div>
