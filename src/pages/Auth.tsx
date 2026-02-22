@@ -43,7 +43,7 @@ const Auth = () => {
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
-        toast.success("Проверьте почту для подтверждения");
+        toast.success("Регистрация успешна!");
       }
     } catch (err: any) {
       toast.error(err.message);
