@@ -1,12 +1,29 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import { useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const Watch = () => {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [deleting, setDeleting] = useState(false);
 
   const { data: video, isLoading } = useQuery({
     queryKey: ["video", id],
@@ -56,12 +73,53 @@ const Watch = () => {
       </Helmet>
 
       <div className="mx-auto max-w-5xl px-4 py-6">
-        <Link to="/">
-          <Button variant="ghost" size="sm" className="mb-4">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Назад
-          </Button>
-        </Link>
+        <div className="mb-4 flex items-center justify-between">
+          <Link to="/">
+            <Button variant="ghost" size="sm">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Назад
+            </Button>
+          </Link>
+
+          {user?.id === video.user_id && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="sm" disabled={deleting}>
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {deleting ? "Удаление..." : "Удалить"}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Удалить видео?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Вы уверены? Это действие нельзя отменить.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Отмена</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={async () => {
+                      setDeleting(true);
+                      try {
+                        await supabase.storage.from("videos").remove([video.storage_path]);
+                        const { error } = await supabase.from("videos").delete().eq("id", video.id);
+                        if (error) throw error;
+                        toast.success("Видео удалено");
+                        navigate("/");
+                      } catch (err: any) {
+                        toast.error(err.message || "Ошибка удаления");
+                        setDeleting(false);
+                      }
+                    }}
+                  >
+                    Удалить
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+        </div>
 
         <div className="overflow-hidden rounded-lg bg-black">
           <video
