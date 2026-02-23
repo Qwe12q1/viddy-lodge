@@ -18,7 +18,7 @@ const formatFileSize = (bytes?: number | null) => {
 };
 
 const VideoCard = ({ id, title, storagePath, createdAt, fileSize }: VideoCardProps) => {
-  const videoUrl = `https://csfibixptjtulhrmjfpm.supabase.co/storage/v1/object/public/videos/${storagePath}`;
+  const videoUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${storagePath}`;
 
   return (
     <Link
