@@ -2,7 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Helmet } from "react-helmet-async";
-import { ArrowLeft, Trash2 } from "lucide-react";
+import { ArrowLeft, Trash2, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -24,6 +24,7 @@ const Watch = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [deleting, setDeleting] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const { data: video, isLoading } = useQuery({
     queryKey: ["video", id],
@@ -134,14 +135,32 @@ const Watch = () => {
           </video>
         </div>
 
-        <h1 className="mt-4 text-xl font-semibold text-foreground">{video.title}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {new Date(video.created_at).toLocaleDateString("ru-RU", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </p>
+        <div className="mt-4 flex items-start justify-between gap-3">
+          <div>
+            <h1 className="text-xl font-semibold text-foreground">{video.title}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {new Date(video.created_at).toLocaleDateString("ru-RU", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="shrink-0"
+            onClick={() => {
+              navigator.clipboard.writeText(videoUrl);
+              setCopied(true);
+              toast.success("Прямая ссылка скопирована");
+              setTimeout(() => setCopied(false), 2000);
+            }}
+          >
+            {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+            {copied ? "Скопировано" : "Ссылка для Rave"}
+          </Button>
+        </div>
       </div>
     </>
   );
