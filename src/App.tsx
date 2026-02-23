@@ -19,7 +19,8 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        {/* Добавляем basename, чтобы роутер понимал путь GitHub Pages */}
+        <BrowserRouter basename="/viddy-lodge">
           <Navbar />
           <Routes>
             <Route path="/" element={<Index />} />
