@@ -58,7 +58,7 @@ const Watch = () => {
     );
   }
 
-  const videoUrl = `https://csfibixptjtulhrmjfpm.supabase.co/storage/v1/object/public/videos/${video.storage_path}`;
+  const videoUrl = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/videos/${video.storage_path}`;
 
   return (
     <>
