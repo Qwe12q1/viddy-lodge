@@ -55,6 +55,7 @@ const VideoUploader = () => {
         xhr.addEventListener("error", () => reject(new Error("Upload failed")));
         xhr.open("POST", url);
         xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+        xhr.setRequestHeader("Content-Type", file.type || "video/mp4");
         xhr.setRequestHeader("x-upsert", "true");
         xhr.send(file);
       });
