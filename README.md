@@ -13,9 +13,9 @@ There are several ways of editing your application.
 Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
 
-https://qwe12q1.github.io/viddy-lodge/#/watch/60b599f1-cb7f-417b-989e-b350bb68e91b
+[[https://qwe12q1.github.io/viddy-lodge/#/watch/60b599f1-cb7f-417b-989e-b350bb68e91b](https://qwe12q1.github.io/viddy-lodge/#/watch/89b16720-3cbf-4fbd-b930-04d3519e4a25)
 
-
+](https://qwe12q1.github.io/viddy-lodge/#/watch/89b16720-3cbf-4fbd-b930-04d3519e4a25)
 
 
 Changes made via Lovable will be committed automatically to this repo.
