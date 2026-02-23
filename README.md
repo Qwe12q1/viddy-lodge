@@ -12,6 +12,12 @@ There are several ways of editing your application.
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
+
+https://qwe12q1.github.io/viddy-lodge/#/watch/60b599f1-cb7f-417b-989e-b350bb68e91b
+
+
+
+
 Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
