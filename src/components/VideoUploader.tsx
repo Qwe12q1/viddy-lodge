@@ -36,7 +36,8 @@ const VideoUploader = () => {
       const formData = new FormData();
       formData.append("", file);
 
-      const url = `https://ogxnofcscxyopskydrwu.supabase.co/storage/v1/object/videos/${storagePath}`;
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const url = `${supabaseUrl}/storage/v1/object/videos/${storagePath}`;
       const session = await supabase.auth.getSession();
       const token = session.data.session?.access_token;
 
